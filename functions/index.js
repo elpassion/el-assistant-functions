@@ -1,21 +1,15 @@
 'use strict';
 
-const firebase = require("firebase/app");
+const functions = require('firebase-functions');
+
+const firebase = require("firebase");
 require("firebase/firestore");
 
-var firebaseConfig = {
-   apiKey: "AIzaSyAfJKotm2CJllKceY7DTQtDTTh5ejnMjEA",
-   authDomain: "el-assistant.firebaseapp.com",
-   databaseURL: "https://el-assistant.firebaseio.com",
-   projectId: "el-assistant",
-   storageBucket: "el-assistant.appspot.com",
-   messagingSenderId: "1024141565851",
-   appId: "1:1024141565851:web:b4462fae24ba210080cb3e"
-};
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firestore);
 
-firebase.initializeApp(firebaseConfig);
+const db = admin.firestore();
 
-const functions = require('firebase-functions');
 const {
   dialogflow,
   BasicCard,
@@ -35,13 +29,50 @@ const app = dialogflow({
     debug : true
 });
 
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+const {WebhookClient} = require('dialogflow-fulfillment');
 
-app.intent('ABC', (conv, params) => {
-    console.log("Starting with `what do you want to know?`");
-    conv.ask(new SimpleResponse({
-       speech:'Sorry, I do not know',
-       text: 'Sorry, I do not know',
-    }));
-   conv.ask(new Suggestions(['Help me', 'Cancel',' Quit']));
+
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+   const agent = new WebhookClient({ request, response });
+
+  function add_report (agent) {
+       const report_data = {
+            name: agent.parameters.project_name,
+            report_date: agent.parameters.report_date,
+            hours: agent.parameters.project_hours,
+            comment: agent.parameters.project_comment
+       }
+        return db.collection("reports").add(report_data)
+  };
+    function add_date (agent) {
+        conv.data
+//       const report_data = {
+//            report_date: agent.parameters.report_date
+//       }
+//       return db.collection("reports").add(report_data)
+  };
+  let intentMap = new Map();
+  intentMap.set('Hub report - date', add_date)
+  intentMap.set('Hub report - date - project name - hours - comment', add_report);
+  agent.handleRequest(intentMap);
+});
+
+
+app.intent('Hub report - yes - project name - hours - comment - yes', (conv, params) => {
+
+    const report_data = {
+        name: "test",
+        hours: "test",
+        comment: "test"
+    };
+
+
+    return db.collection("reports").add(report_data)
+        .then(result => {
+            return conv.ask('Report was added.');
+        })
+        .catch(err => {
+            console.error( err );
+            return conv.close('I had a problem with the database. Try again later.');
+        });
 });
