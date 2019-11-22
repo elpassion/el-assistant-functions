@@ -34,7 +34,7 @@ const {WebhookClient} = require('dialogflow-fulfillment');
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
     const agent = new WebhookClient({request, response});
 
-    function add_report(agent) {
+    function create_report(agent) {
         const report_ctx4 = agent.getContext("report_ctx4").parameters;
         const report_data = {
             name: report_ctx4.project_name,
@@ -95,6 +95,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     intentMap.set('hub - date - name', add_project_name);
     intentMap.set('hub - date - name - hours', add_hours);
     intentMap.set('hub - date - name - hours - comment', add_comment);
-    intentMap.set('hub - date - name - hours - comment - yes', add_report);
+    intentMap.set('hub - date - name - hours - comment - yes', create_report);
     agent.handleRequest(intentMap);
 });
