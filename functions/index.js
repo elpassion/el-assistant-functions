@@ -42,6 +42,14 @@ app.intent('fire_somebody - name', (conv) => {
         `<audio src="${audioSound}"></audio></speak>`);
 });
 
+app.intent('order bananas - amount', (conv) => {
+    const context = conv.contexts.get('orderbananas-followup');
+    const audioSound = 'https://actions.google.com/sounds/v1/human_voices/human_eating_peach.ogg';
+    conv.close(`<speak>${context.parameters['bananas_number']}` +
+        ` NICE! ` + `Go to the kitchen and enjoy!` +
+        `<audio src="${audioSound}"></audio></speak>`);
+});
+
 app.intent('hub - date', (conv, params) => {
     conv.data.report_date = conv.parameters['report_date'];
 });
