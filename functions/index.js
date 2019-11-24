@@ -9,6 +9,7 @@ const db = admin.firestore();
 const {
     dialogflow,
     Permission,
+    SimpleResponse,
     Suggestions
 } = require('actions-on-google');
 
@@ -32,6 +33,20 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
         conv.ask(`Thanks, ${conv.data.userName}. How can I serve you?`);
         conv.ask(new Suggestions('Add report', 'Order bananas', 'Fire somebody'));
     }
+});
+
+app.intent('about_us', (conv) => {
+    conv.ask(new SimpleResponse({
+        speech: `EL Passion is a company that develops Ruby on Rails web applications, ` +
+            `feature-rich iOS and Android applications for clients worldwide.`,
+        text: `EL Passion is a company that develops Ruby on Rails web applications, ` +
+            `feature-rich iOS and Android applications for clients worldwide.`,
+    }));
+    conv.ask(new SimpleResponse({
+        speech: `We are innovative, creative and love to push the boundaries of what is possible.`,
+        text: `We are innovative, creative and love to push the boundaries of what is possible.`,
+    }));
+    conv.ask(new Suggestions('Apply for a job'));
 });
 
 app.intent('fire_somebody - name', (conv) => {
