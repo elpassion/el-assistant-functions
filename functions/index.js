@@ -8,21 +8,30 @@ const db = admin.firestore();
 
 const {
     dialogflow,
-    BasicCard,
-    BrowseCarousel,
-    BrowseCarouselItem,
-    Button,
-    Carousel,
-    Image,
-    LinkOutSuggestion,
-    List,
-    MediaObject,
-    Suggestions,
-    SimpleResponse,
+    Permission,
+    Suggestions
 } = require('actions-on-google');
 
 const app = dialogflow({
     "debug": true,
+});
+
+app.intent('Default Welcome Intent', (conv) => {
+    conv.ask(new Permission({
+        context: 'To get to know you better',
+        permissions: 'NAME'
+    }));
+});
+
+app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
+    if (!permissionGranted) {
+        conv.ask(`Ok, no worries. How can I serve you?`);
+        conv.ask(new Suggestions('Add report', 'Order bananas', 'Fire somebody'));
+    } else {
+        conv.data.userName = conv.user.name.display;
+        conv.ask(`Thanks, ${conv.data.userName}. How can I serve you?`);
+        conv.ask(new Suggestions('Add report', 'Order bananas', 'Fire somebody'));
+    }
 });
 
 app.intent('hub - date', (conv, params) => {
