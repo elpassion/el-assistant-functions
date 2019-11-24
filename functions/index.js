@@ -34,6 +34,14 @@ app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     }
 });
 
+app.intent('fire_somebody - name', (conv) => {
+    const context = conv.contexts.get('fire_somebody-followup');
+    const audioSound = 'https://actions.google.com/sounds/v1/impacts/crash.ogg\n';
+    conv.close(`<speak>You can say bye to ` +
+        `${context.parameters['fire_name']}.` +
+        `<audio src="${audioSound}"></audio></speak>`);
+});
+
 app.intent('hub - date', (conv, params) => {
     conv.data.report_date = conv.parameters['report_date'];
 });
