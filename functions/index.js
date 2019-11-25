@@ -27,6 +27,11 @@ app.intent('manage_daily_basics', (conv) => {
     conv.ask(new Suggestions("📄 Add report", '🍌 Order bananas', '🔥 Fire somebody'));
 });
 
+app.intent('show_news', (conv) => {
+    conv.ask(`What do you want to know?`);
+    conv.ask(new Suggestions('💼 Current job opening'));
+});
+
 app.intent('about_us', (conv) => {
     conv.ask(new SimpleResponse({
         speech: `EL Passion is a company that develops Ruby on Rails web applications, ` +
@@ -44,7 +49,7 @@ app.intent('about_us', (conv) => {
 app.intent('apply_for_a_job', (conv) => {
     conv.ask('Get on board and work with us on a variety of startup projects, learn and enjoy!');
     conv.ask(new List({
-        title: 'Current Job Openings',
+        title: 'Current job openings',
         items: {
             'android_developer_job': {
                 synonyms: [
