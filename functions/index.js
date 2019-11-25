@@ -22,6 +22,20 @@ app.intent('Default Welcome Intent', (conv) => {
     conv.ask(new Suggestions('Tell who you are', 'Manage daily basics', 'Show news'));
 });
 
+app.intent('about_us', (conv) => {
+    conv.ask(new SimpleResponse({
+        speech: `EL Passion is a company that develops Ruby on Rails web applications, ` +
+            `feature-rich iOS and Android applications for clients worldwide.`,
+        text: `EL Passion is a company that develops Ruby on Rails web applications, ` +
+            `feature-rich iOS and Android applications for clients worldwide.`,
+    }));
+    conv.ask(new SimpleResponse({
+        speech: `We are innovative, creative and love to push the boundaries of what is possible.`,
+        text: `We are innovative, creative and love to push the boundaries of what is possible.`,
+    }));
+    conv.ask(new Suggestions("💼 I'm looking for a job"));
+});
+
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     if (!permissionGranted) {
         conv.ask(`Ok, no worries. How can I serve you?`);
