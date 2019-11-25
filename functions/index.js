@@ -22,6 +22,11 @@ app.intent('Default Welcome Intent', (conv) => {
     conv.ask(new Suggestions('Tell who you are', 'Manage daily basics', 'Show news'));
 });
 
+app.intent('manage_daily_basics', (conv) => {
+    conv.ask(`What do you want to do?`);
+    conv.ask(new Suggestions("📄 Add report", '🍌 Order bananas', '🔥 Fire somebody'));
+});
+
 app.intent('about_us', (conv) => {
     conv.ask(new SimpleResponse({
         speech: `EL Passion is a company that develops Ruby on Rails web applications, ` +
