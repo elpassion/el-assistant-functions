@@ -8,8 +8,13 @@ const db = admin.firestore();
 
 const {
     dialogflow,
+    Button,
+    Image,
+    BasicCard,
+    List,
     SimpleResponse,
-    Suggestions
+    Suggestions,
+    Permission
 } = require('actions-on-google');
 
 const app = dialogflow({
@@ -23,13 +28,37 @@ app.intent('Default Welcome Intent', (conv) => {
 });
 
 app.intent('manage_daily_basics', (conv) => {
-    conv.ask(`What do you want to do?`);
-    conv.ask(new Suggestions("📄 Add report", '🍌 Order bananas', '🔥 Fire somebody'));
+    const name = conv.user.storage.userName;
+    if (!name) {
+        conv.ask(new Permission({
+            context: 'To get to know you better',
+            permissions: 'NAME',
+        }));
+    } else {
+        conv.ask(`What do you want to do?`);
+        conv.ask(new Suggestions(`📄 Add report`, '🍌 Order bananas', '🔥 Fire somebody'));
+    }
+});
+
+app.intent('manage_daily_basics - name_permission', (conv, params, permissionGranted) => {
+    if (!permissionGranted) {
+        conv.ask(new SimpleResponse({
+            speech: `Oh. I need your name.`,
+            text: `Oh. I need your name 😔.`,
+        }));
+        conv.ask(`Please, try again!`);
+        conv.ask(new Suggestions('Try again'));
+    } else {
+        conv.data.userName = conv.user.name.display;
+        conv.ask(`Thanks, ${conv.data.userName}.`);
+        conv.ask(`What do you want to do?`);
+        conv.ask(new Suggestions(`📄 Add report`, '🍌 Order bananas', '🔥 Fire somebody'));
+    }
 });
 
 app.intent('show_news', (conv) => {
     conv.ask(`What do you want to know?`);
-    conv.ask(new Suggestions('💼 Current job opening'));
+    conv.ask(new Suggestions('💼 Current job openings'));
 });
 
 app.intent('about_us', (conv) => {
@@ -43,7 +72,7 @@ app.intent('about_us', (conv) => {
         speech: `We are innovative, creative and love to push the boundaries of what is possible.`,
         text: `We are innovative, creative and love to push the boundaries of what is possible.`,
     }));
-    conv.ask(new Suggestions("💼 I'm looking for a job"));
+    conv.ask(new Suggestions('💚 Apply for a job'));
 });
 
 app.intent('apply_for_a_job', (conv) => {
@@ -52,47 +81,32 @@ app.intent('apply_for_a_job', (conv) => {
         title: 'Current job openings',
         items: {
             'android_developer_job': {
-                synonyms: [
-                    'Android Developer',
-                ],
                 title: 'Android Developer',
                 description: 'Engineering / Mobile',
             },
             'ruby_developer_job': {
-                synonyms: [
-                    'Ruby Developer',
-                ],
                 title: 'Ruby Developer',
                 description: 'Engineering / Backend',
             },
             'senior_ruby_developer_job': {
-                synonyms: [
-                    'Senior Ruby Developer',
-                ],
                 title: 'Senior Ruby Developer',
                 description: 'Engineering / Backend',
             },
             'senior_front_end_developer_job': {
-                synonyms: [
-                    'Senior Frontend Developer',
-                ],
                 title: 'Senior Front-end Developer',
                 description: 'Engineering / Frontend',
             },
             'business_development_representative_job': {
-                synonyms: [
-                    'Business Development Representative',
-                ],
                 title: 'Business Development Representative',
                 description: 'Support / Sales',
             },
         },
     }));
-    conv.ask(new Suggestions('No job fits me', 'I have a question'));
+    conv.ask(new Suggestions('No job fits me', 'Ask a question'));
 });
 
 app.intent('apply_for_a_job - contact', (conv) => {
-    conv.ask(`Ask HR‑Heroes!`);
+    conv.ask(`Let's ask HR‑Heroes!`);
     conv.ask(new Suggestions('📞 Call', '📧 E-mail'));
 });
 
@@ -197,33 +211,10 @@ app.intent('apply_for_a_job - business_development_representative_job', (conv) =
     }));
 });
 
-app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
-    if (!permissionGranted) {
-        conv.ask(`Ok, no worries. How can I serve you?`);
-    } else {
-        conv.data.userName = conv.user.name.display;
-        conv.ask(`Thanks, ${conv.data.userName}. How can I serve you?`);
-    }
-});
-
-app.intent('about_us', (conv) => {
-    conv.ask(new SimpleResponse({
-        speech: `EL Passion is a company that develops Ruby on Rails web applications, ` +
-            `feature-rich iOS and Android applications for clients worldwide.`,
-        text: `EL Passion is a company that develops Ruby on Rails web applications, ` +
-            `feature-rich iOS and Android applications for clients worldwide.`,
-    }));
-    conv.ask(new SimpleResponse({
-        speech: `We are innovative, creative and love to push the boundaries of what is possible.`,
-        text: `We are innovative, creative and love to push the boundaries of what is possible.`,
-    }));
-    conv.ask(new Suggestions('Apply for a job'));
-});
-
 app.intent('fire_somebody - name', (conv) => {
     const context = conv.contexts.get('fire_somebody-followup');
     const audioSound = 'https://actions.google.com/sounds/v1/impacts/crash.ogg\n';
-    conv.close(`<speak>You can say bye to ` +
+    conv.ask(`<speak>You can say bye to ` +
         `${context.parameters['fire_name']}.` +
         `<audio src="${audioSound}"></audio></speak>`);
 });
@@ -231,8 +222,8 @@ app.intent('fire_somebody - name', (conv) => {
 app.intent('order bananas - amount', (conv) => {
     const context = conv.contexts.get('orderbananas-followup');
     const audioSound = 'https://actions.google.com/sounds/v1/human_voices/human_eating_peach.ogg';
-    conv.close(`<speak>${context.parameters['bananas_number']}` +
-        ` NICE! ` + `Go to the kitchen and enjoy!` +
+    conv.ask(`<speak>${context.parameters['bananas_number']}` +
+        ` Great! ` + `Go to the kitchen and enjoy!` +
         `<audio src="${audioSound}"></audio></speak>`);
 });
 
