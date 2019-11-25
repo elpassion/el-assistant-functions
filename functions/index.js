@@ -8,7 +8,6 @@ const db = admin.firestore();
 
 const {
     dialogflow,
-    Permission,
     SimpleResponse,
     Suggestions
 } = require('actions-on-google');
@@ -18,20 +17,17 @@ const app = dialogflow({
 });
 
 app.intent('Default Welcome Intent', (conv) => {
-    conv.ask(new Permission({
-        context: 'To get to know you better',
-        permissions: 'NAME'
-    }));
+    conv.ask(`Hello! How can I serve you?`);
+    conv.ask(`I can tell about us, manage daily basis at work or show current information or available jobs.`);
+    conv.ask(new Suggestions('Tell who you are', 'Manage daily basics', 'Show news'));
 });
 
 app.intent('actions_intent_PERMISSION', (conv, params, permissionGranted) => {
     if (!permissionGranted) {
         conv.ask(`Ok, no worries. How can I serve you?`);
-        conv.ask(new Suggestions('Add report', 'Order bananas', 'Fire somebody'));
     } else {
         conv.data.userName = conv.user.name.display;
         conv.ask(`Thanks, ${conv.data.userName}. How can I serve you?`);
-        conv.ask(new Suggestions('Add report', 'Order bananas', 'Fire somebody'));
     }
 });
 
