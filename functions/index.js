@@ -49,8 +49,8 @@ app.intent('manage_daily_basics - name_permission', (conv, params, permissionGra
         conv.ask(`Please, try again!`);
         conv.ask(new Suggestions('Try again'));
     } else {
-        conv.data.userName = conv.user.name.display;
-        conv.ask(`Thanks, ${conv.data.userName}.`);
+        conv.user.storage.userName = conv.user.name.display;
+        conv.ask(`Thanks, ${conv.user.storage.userName}.`);
         conv.ask(`What do you want to do?`);
         conv.ask(new Suggestions(`📄 Add report`, '🍌 Order bananas', '🔥 Fire somebody'));
     }
@@ -285,7 +285,7 @@ app.intent('hub - date - hours - name - comment - summary - yes', (conv) => {
         hours: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['hours'],
         name: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['name'],
         comment: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['comment'],
-        userName: conv.data.userName
+        userName: conv.user.storage.userName
     };
     db.collection("reports").add(report_data);
     conv.ask('Great job!');
