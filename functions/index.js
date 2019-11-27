@@ -227,30 +227,68 @@ app.intent('order bananas - amount', (conv) => {
         `<audio src="${audioSound}"></audio></speak>`);
 });
 
-app.intent('hub - date', (conv, params) => {
-    conv.data.report_date = conv.parameters['report_date'];
+app.intent('hub', (conv) => {
+    conv.ask("OK. Let's add a report.");
+
 });
 
-app.intent('hub - date - name', (conv, params) => {
-    conv.data.project_name = conv.parameters['project_name'];
+app.intent('hub - date', (conv) => {
+    conv.ask('Give me report date!');
+    conv.ask(new Suggestions('Today', 'Yesterday', 'Day before yesterday'));
 });
 
-app.intent('hub - date - name - hours', (conv, params) => {
-    conv.data.hours = conv.parameters['project_hours'];
+app.intent('hub - date - hours', (conv, params) => {
+    const parameters = {
+        date: params['report_date']
+    };
+    conv.contexts.set('hub_date_hours', 5, parameters);
+    conv.ask(`How many hours?`);
+    conv.ask(new Suggestions('8', '7', '6', '5', '4', '3', '2', '1'));
 });
 
-app.intent('hub - date - name - hours - comment', (conv, params) => {
-    conv.data.comment = conv.parameters['project_comment'];
+app.intent('hub - date - hours - name', (conv, params) => {
+    const parameters = {
+        date: conv.contexts.get('hub_date_hours').parameters['date'],
+        hours: params['project_hours']
+    };
+    conv.contexts.set('hub_date_hours_name', 5, parameters);
+    conv.ask(`What is the project name?`);
 });
 
-app.intent('hub - date - name - hours - comment - yes', (conv) => {
+app.intent('hub - date - hours - name - comment', (conv, params) => {
+    const hours = conv.contexts.get('hub_date_hours_name').parameters['hours'];
+    const project_name = params['project_name'];
+    const parameters = {
+        date: conv.contexts.get('hub_date_hours_name').parameters['date'],
+        hours: hours,
+        name: project_name
+    };
+    conv.contexts.set('hub_date_hours_name_comment', 5, parameters);
+    conv.ask(`What did you do in ` + project_name + ` for ` + hours + ` hours?`)
+});
+
+app.intent('hub - date - hours - name - comment - summary', (conv, params) => {
+    const parameters = {
+        date: conv.contexts.get('hub_date_hours_name_comment').parameters['date'],
+        hours: conv.contexts.get('hub_date_hours_name_comment').parameters['hours'],
+        name: conv.contexts.get('hub_date_hours_name_comment').parameters['name'],
+        comment: params['project_comment']
+    };
+    conv.contexts.set('hub_date_hours_name_comment_summary', 5, parameters);
+    conv.ask('Great! Send report?');
+    conv.ask(new Suggestions('Yes', 'No'));
+});
+
+app.intent('hub - date - hours - name - comment - summary - yes', (conv) => {
     const report_data = {
-        date: conv.data.report_date,
-        name: conv.data.project_name,
-        hours: conv.data.hours,
-        comment: conv.data.comment
+        date: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['date'],
+        hours: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['hours'],
+        name: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['name'],
+        comment: conv.contexts.get('hub_date_hours_name_comment_summary').parameters['comment'],
+        userName: conv.data.userName
     };
     db.collection("reports").add(report_data);
+    conv.ask('Great job!');
 });
 
 exports.ELAssistantFulfillment = functions.https.onRequest(app);
