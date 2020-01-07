@@ -126,90 +126,92 @@ app.intent('apply_for_a_job - contact - email', (conv) => {
     conv.ask('careers@elpassion.pl');
 });
 
-app.intent('apply_for_a_job - android_developer_job', (conv) => {
-    conv.ask(`Here's a job offer for Android Developer.`);
-    conv.ask(new BasicCard({
-        subtitle: 'Engineering / Mobile',
-        title: 'Android Developer',
-        buttons: new Button({
-            title: 'Apply for this job',
-            url: 'https://apply.workable.com/elpassion/j/E4F2976D09/',
-        }),
-        image: new Image({
-            url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
-            alt: 'EL Passion',
-        }),
-        display: 'CROPPED',
-    }));
+app.intent('apply_for_a_job - OPTION', (conv, params, option) => {
+    ;
+    switch (option) {
+        case 'android_developer_job':
+            conv.ask(`Here's a job offer for Android Developer.`);
+            conv.ask(new BasicCard({
+                subtitle: 'Engineering / Mobile',
+                title: 'Android Developer',
+                buttons: new Button({
+                    title: 'Apply for this job',
+                    url: 'https://apply.workable.com/elpassion/j/E4F2976D09/',
+                }),
+                image: new Image({
+                    url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
+                    alt: 'EL Passion',
+                }),
+                display: 'CROPPED',
+            }));
+            break;
+        case 'ruby_developer_job':
+            conv.ask(`Here's a job offer for Ruby Developer.`);
+            conv.ask(new BasicCard({
+                subtitle: 'Engineering / Backend',
+                title: 'Ruby Developer',
+                buttons: new Button({
+                    title: 'Apply for this job',
+                    url: 'https://apply.workable.com/elpassion/j/48C385051A/',
+                }),
+                image: new Image({
+                    url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
+                    alt: 'EL Passion',
+                }),
+                display: 'CROPPED',
+            }));
+            break;
+        case 'senior_ruby_developer_job':
+            conv.ask(`Here's a job offer for Senior Ruby Developer.`)
+            conv.ask(new BasicCard({
+                subtitle: 'Engineering / Backend',
+                title: 'Senior Ruby Developer',
+                buttons: new Button({
+                    title: 'Apply for this job',
+                    url: 'https://apply.workable.com/elpassion/j/820FBAD549/',
+                }),
+                image: new Image({
+                    url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
+                    alt: 'EL Passion',
+                }),
+                display: 'CROPPED',
+            }));
+            break;
+        case 'senior_front_end_developer_job':
+            conv.ask(`Here's a job offer for Senior Frontend Developer.`);
+            conv.ask(new BasicCard({
+                subtitle: 'Engineering / Frontend',
+                title: 'Senior Frontend Developer',
+                buttons: new Button({
+                    title: 'Apply for this job',
+                    url: 'https://apply.workable.com/elpassion/j/7194D5EABC/',
+                }),
+                image: new Image({
+                    url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
+                    alt: 'EL Passion',
+                }),
+                display: 'CROPPED',
+            }));
+            break;
+        case 'business_development_representative_job':
+            conv.ask(`Here's a job offer for Business Development Representative.`);
+            conv.ask(new BasicCard({
+                subtitle: 'Support / Sales',
+                title: 'Business Development Representative',
+                buttons: new Button({
+                    title: 'Apply for this job',
+                    url: 'https://apply.workable.com/elpassion/j/D28E036290/',
+                }),
+                image: new Image({
+                    url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
+                    alt: 'EL Passion',
+                }),
+                display: 'CROPPED',
+            }));
+            break;
+    }
 });
 
-app.intent('apply_for_a_job - ruby_developer_job', (conv) => {
-    conv.ask(`Here's a job offer for Ruby Developer.`);
-    conv.ask(new BasicCard({
-        subtitle: 'Engineering / Backend',
-        title: 'Ruby Developer',
-        buttons: new Button({
-            title: 'Apply for this job',
-            url: 'https://apply.workable.com/elpassion/j/48C385051A/',
-        }),
-        image: new Image({
-            url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
-            alt: 'EL Passion',
-        }),
-        display: 'CROPPED',
-    }));
-});
-
-app.intent('apply_for_a_job - senior_ruby_developer_job', (conv) => {
-    conv.ask(`Here's a job offer for Senior Ruby Developer.`);
-    conv.ask(new BasicCard({
-        subtitle: 'Engineering / Backend',
-        title: 'Senior Ruby Developer',
-        buttons: new Button({
-            title: 'Apply for this job',
-            url: 'https://apply.workable.com/elpassion/j/820FBAD549/',
-        }),
-        image: new Image({
-            url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
-            alt: 'EL Passion',
-        }),
-        display: 'CROPPED',
-    }));
-});
-
-app.intent('apply_for_a_job - senior_frontend_developer_job', (conv) => {
-    conv.ask(`Here's a job offer for Senior Frontend Developer.`);
-    conv.ask(new BasicCard({
-        subtitle: 'Engineering / Frontend',
-        title: 'Senior Frontend Developer',
-        buttons: new Button({
-            title: 'Apply for this job',
-            url: 'https://apply.workable.com/elpassion/j/7194D5EABC/',
-        }),
-        image: new Image({
-            url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
-            alt: 'EL Passion',
-        }),
-        display: 'CROPPED',
-    }));
-});
-
-app.intent('apply_for_a_job - business_development_representative_job', (conv) => {
-    conv.ask(`Here's a job offer for Business Development Representative.`);
-    conv.ask(new BasicCard({
-        subtitle: 'Support / Sales',
-        title: 'Business Development Representative',
-        buttons: new Button({
-            title: 'Apply for this job',
-            url: 'https://apply.workable.com/elpassion/j/D28E036290/',
-        }),
-        image: new Image({
-            url: 'https://workablehr.s3.amazonaws.com/uploads/account/logo/13617/nowe_logo_blisko.png',
-            alt: 'EL Passion',
-        }),
-        display: 'CROPPED',
-    }));
-});
 
 app.intent('fire_somebody - name', (conv) => {
     const context = conv.contexts.get('fire_somebody-followup');
