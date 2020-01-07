@@ -20,7 +20,7 @@ This is a set of functions connected with the application called EL Passion whic
 
 ## Run ##
 
-Open the Google Assistant app or say the phrase - "Ok, Google" and then tell the phrase - "Talk to EL Passion" and next, the application will invoke. Be ready to talk and enjoy!
+Firstly, open the Google Assistant app or say the phrase - "Ok, Google". Secondly tell the phrase - "Talk to EL Passion" and then, the EL Passion application will invoke. Be ready to talk and enjoy it!
 
 ## Demo ##
 
@@ -30,45 +30,47 @@ Open the Google Assistant app or say the phrase - "Ok, Google" and then tell the
 
 ### v2 (29.11 2019) ### 
 
-* a conversation to sharing who we are as EL Passion,
-* a conversation to sharing current opening jobs,
-* a conversation to applying for a job,
+#### Features: ####
+
+* a conversation to tell who we are as EL Passion,
+* a conversation to share current opening jobs,
+* a conversation to apply for a job,
 * a conversation to contact via an email or a phone,
 
 #### Capabilities: ####
-* use Permission for asking about user info,
+* require, use `Permission` to ask about user info,
 * store user first name and last name,
 * save user info in the user storage,
 * play sounds during a conversations
 * use the following UI elements:
-    * BasicCard,
-    * Button,
-    * Image,
-    * List,
-    * SimpleResponse,
-    * Suggestions
+    * `BasicCard`,
+    * `Button`,
+    * `Image`,
+    * `List`,
+    * `SimpleResponse`,
+    * `Suggestion`
 
 #### Others: ####
 * migrate DialogFlow API from V1 to V2,
 * update a way of storing data in a conversation context,
-* rewrite the conversation of adding a report, move phrases, dialogues and the logic behind from DialogFlow web-application to Google Cloud Functions,
+* rewrite the conversation regarding add a report, order bananas and fire somebody,
+* move phrases, dialogues and a logic behind from DialogFlow web-application to Google Cloud Functions,
+* create new dialogues in conversations,
 * update dialogues in conversations,
-* use Emoji
+* use Emoji during a conversations
 
 ### v1 (Hackathon Autumn 21.11-22.11 2019) ### 
 
 #### Features: ####
-
-* a conversation to adding a report, asking for:
+* a conversation to add a report, asking for:
     * date,
     * project name,
     * number of hours,
     * comment or description of work
-* a conversation to ordering bananas,
-* a conversation to firing someone 
+* a conversation to order bananas,
+* a conversation to fire somebody 
 
 #### Capabilities: ####
-
 * collect data,
 * pass a data from one intent to another intent, store parameters in the context,
 * call a request to database with whole data
