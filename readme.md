@@ -47,7 +47,15 @@ Firstly, open the Google Assistant app or say the phrase - "Ok, Google". Secondl
 
 ## Demo ##
 
-(soon)
+![](documentation/launch_app.gif)
+![](documentation/about_us.gif)
+![](documentation/apply_for_a_job.gif)
+![](documentation/no_job_fits_me.gif)
+![](documentation/add_report.gif)
+![](documentation/add_report_firebase.gif)
+![](documentation/fire_somebody.gif)
+![](documentation/order_bananas.gif)
+![](documentation/show_news_current_jobs.gif)
 
 ## Changelog ##
 
