@@ -55,7 +55,7 @@ Firstly, open the Google Assistant app or say the phrase - "Ok, Google". Secondl
 ![](documentation/add_report_firebase.gif)
 ![](documentation/fire_somebody.gif)
 ![](documentation/order_bananas.gif)
-![](documentation/show_news_current_jobs.gif)
+![](documentation/show_news_current_jobs_opening_email.gif)
 
 ## Changelog ##
 
